@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Making Music with Code — Basics</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: #f7f5f0; color: #1a1a1a; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+  .page { max-width: 720px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+  .topnav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #d0ccc4; max-width: 720px; margin: 0 auto; }
+  .nav-steps { display: flex; gap: 6px; align-items: center; }
+  .nav-step { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #d0ccc4; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #aaa; text-decoration: none; transition: all 0.15s; }
+  .nav-step.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+  .nav-step:hover:not(.active) { border-color: #888; color: #555; }
+  .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #888; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #f7f5f0; border-top: 1px solid #d0ccc4; padding: 0.85rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; text-decoration: none; color: #1a1a1a; padding: 7px 14px; border: 1.5px solid #1a1a1a; border-radius: 6px; transition: all 0.15s; }
+  .nav-btn:hover { background: #1a1a1a; color: #f7f5f0; }
+  .nav-btn.ghost { color: #888; border-color: #d0ccc4; }
+  .nav-spacer { visibility: hidden; }
+  .pg-eyebrow { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 0.3rem; margin-top: 1.5rem; }
+  h1 { font-size: 26px; font-weight: 600; line-height: 1.2; margin-bottom: 0.5rem; }
+  .pg-desc { color: #555; font-size: 14px; margin-bottom: 1.5rem; line-height: 1.65; }
+  .slabel { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.6rem; margin-top: 1.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid #d0ccc4; }
+  .slabel-hint { font-size: 11px; text-transform: none; letter-spacing: 0; color: #aaa; font-weight: 400; margin-left: 8px; }
+  .code-wrap { background: #1a1a1a; border-radius: 5px; padding: 0.65rem 0.9rem; }
+  pre { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e8e4dc; white-space: pre; overflow-x: auto; line-height: 1.7; }
+  .str { color: #a8e6b8; } .fn { color: #b8d4ff; } .num { color: #ffd4a8; } .cm { color: #666; }
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #e8e5de; padding: 1px 5px; border-radius: 3px; color: #2a2a2a; }
+  .card { background: #fff; border: 1px solid #d0ccc4; border-radius: 8px; padding: 0.85rem 1rem; }
+  .card-name { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 0.25rem; }
+  .card-desc { font-size: 13px; color: #333; margin-bottom: 0.5rem; line-height: 1.5; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .grid-2 .full { grid-column: span 2; }
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } .grid-2 .full { grid-column: span 1; } }
+  .keys { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; background: #fff; border: 1px solid #d0ccc4; border-radius: 8px; padding: 0.75rem 1rem; }
+  .keys-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #888; font-weight: 600; }
+  .key-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; }
+  kbd { font-family: 'IBM Plex Mono', monospace; font-size: 11px; background: #fff; border: 1px solid #bbb; border-radius: 4px; padding: 2px 7px; box-shadow: 0 1px 0 #bbb; color: #1a1a1a; }
+  .key-os { font-size: 10px; color: #aaa; margin-left: 3px; }
+  .link-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 0.25rem; }
+  .link-list a { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1a1a1a; }
+  .link-list .ld { color: #888; font-size: 12px; margin-left: 3px; }
+  hr { border: none; border-top: 1px dashed #d0ccc4; margin: 1.5rem 0; }
+  .strudel-open { display: inline-flex; align-items: center; gap: 7px; background: #1a1a1a; color: #f7f5f0; text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 6px; margin-bottom: 1.25rem; font-family: 'IBM Plex Mono', monospace; }
+  .strudel-open:hover { background: #333; }
+  .sound-chip { display: inline-block; background: #f0ede6; border: 1px solid #d0ccc4; border-radius: 3px; padding: 2px 8px; margin: 3px 3px 3px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1a1a1a; }
+  .sound-row { line-height: 2.1; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="nav-logo">crc · music</span>
+  <div class="nav-steps">
+    <a href="index.html" class="nav-step active" title="Basics">1</a>
+    <a href="level1.html" class="nav-step" title="Level 1 — Edit">2</a>
+    <a href="level2.html" class="nav-step" title="Level 2 — Add">3</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <p class="pg-eyebrow">Code Reading Club — Music Session</p>
+  <h1>Making Music with Code</h1>
+  <p class="pg-desc">Strudel is a live coding environment for making music in the browser. You write code, hit play, and it loops. Change the code while it's running — the music updates on the next cycle. Nothing to install.</p>
+
+  <a href="https://strudel.cc" target="_blank" class="strudel-open">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    open strudel.cc
+  </a>
+
+  <div class="keys">
+    <span class="keys-label">shortcuts</span>
+    <div class="key-item"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> <span class="key-os">(⌘+↵ on Mac)</span> play / update</div>
+    <div class="key-item"><kbd>Ctrl</kbd>+<kbd>.</kbd> <span class="key-os">(⌘+. on Mac)</span> stop</div>
+  </div>
+
+  <div class="slabel">the basics <span class="slabel-hint">— with strudel.cc open, paste each snippet and listen</span></div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-name">The cycle</div>
+      <div class="card-desc">Everything fits in a repeating loop. More sounds = each gets less time. Fewer = more space.</div>
+      <div class="code-wrap"><pre><span class="fn">sound</span>(<span class="str">"bd hh sd hh"</span>)
+<span class="cm">// try adding more — it speeds up</span></pre></div>
+    </div>
+
+    <div class="card">
+      <div class="card-name">Drums</div>
+      <div class="card-desc"><code>bd</code> bass drum &nbsp; <code>sd</code> snare &nbsp; <code>hh</code> hi-hat &nbsp; <code>oh</code> open hi-hat &nbsp; <code>cp</code> clap</div>
+      <div class="code-wrap"><pre><span class="fn">sound</span>(<span class="str">"bd ~ sd ~"</span>)
+<span class="cm">// classic kick-snare</span></pre></div>
+    </div>
+
+    <div class="card">
+      <div class="card-name">Silence — <code>~</code></div>
+      <div class="card-desc">A tilde is a rest. Holds space without sound. Silence is what makes a beat feel like a beat.</div>
+      <div class="code-wrap"><pre><span class="fn">sound</span>(<span class="str">"bd sd bd sd"</span>)  <span class="cm">// no rests</span>
+<span class="fn">sound</span>(<span class="str">"bd ~ sd ~"</span>)    <span class="cm">// with rests</span></pre></div>
+    </div>
+
+    <div class="card">
+      <div class="card-name">Repeat — <code>*</code></div>
+      <div class="card-desc">Repeat a sound multiple times within one step. <code>hh*4</code> plays hi-hat four times in that spot.</div>
+      <div class="code-wrap"><pre><span class="fn">sound</span>(<span class="str">"hh*4"</span>)
+<span class="fn">sound</span>(<span class="str">"hh*8"</span>)  <span class="cm">// even busier</span></pre></div>
+    </div>
+
+    <div class="card">
+      <div class="card-name">Notes & melody — <code>note()</code></div>
+      <div class="card-desc">A melody is a sequence of pitched notes. Use <code>note()</code> with note names + octave numbers. Pair with <code>.sound()</code> to pick an instrument.</div>
+      <div class="code-wrap"><pre><span class="fn">note</span>(<span class="str">"c3 e3 g3 e3"</span>)
+  .<span class="fn">sound</span>(<span class="str">"piano"</span>)</pre></div>
+    </div>
+
+    <div class="card">
+      <div class="card-name">Volume — <code>.gain()</code></div>
+      <div class="card-desc"><code>1</code> = full &nbsp; <code>0.5</code> = half &nbsp; <code>0</code> = silent. Balance layers against each other.</div>
+      <div class="code-wrap"><pre><span class="fn">sound</span>(<span class="str">"hh*8"</span>).<span class="fn">gain</span>(<span class="num">0.3</span>)
+<span class="cm">// hats sit quietly behind kick</span></pre></div>
+    </div>
+
+    <div class="card full">
+      <div class="card-name">Multiple patterns — <code>$:</code></div>
+      <div class="card-desc">Start a line with <code>$:</code> to run multiple patterns simultaneously. Each loops independently — this is how you layer drums, bass, and melody.</div>
+      <div class="code-wrap"><pre><span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"bd ~ sd ~"</span>)
+<span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"hh*8"</span>).<span class="fn">gain</span>(<span class="num">0.3</span>)
+<span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"c3 ~ e3 ~ g3 ~ e3 ~"</span>).<span class="fn">sound</span>(<span class="str">"piano"</span>)</pre></div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div class="slabel">note names</div>
+  <div class="card">
+    <div class="code-wrap"><pre><span class="cm">// white keys — octave 3 and 4 are most useful</span>
+<span class="str">c3  d3  e3  f3  g3  a3  b3</span>
+<span class="str">c4  d4  e4  f4  g4  a4  b4</span>
+
+<span class="cm">// black keys (b = flat, # = sharp)</span>
+<span class="str">eb3  ab3  bb3  f#3  c#3</span>
+
+<span class="cm">// easy mode — these 5 notes sound good together, pick any of them</span>
+<span class="str">c3  eb3  f3  g3  bb3</span></pre></div>
+  </div>
+
+  <hr>
+
+  <div class="slabel">melodic sounds <span class="slabel-hint">— swap into <code style="font-size:11px">.sound("…")</code></span></div>
+  <div class="card">
+    <div class="sound-row">
+      <span class="sound-chip">piano</span>
+      <span class="sound-chip">casio</span>
+      <span class="sound-chip">triangle</span>
+      <span class="sound-chip">sawtooth</span>
+      <span class="sound-chip">gm_violin</span>
+      <span class="sound-chip">gm_cello</span>
+      <span class="sound-chip">gm_synth_bass_1</span>
+      <span class="sound-chip">gm_acoustic_bass</span>
+      <span class="sound-chip">gm_lead_1_square</span>
+      <span class="sound-chip">gm_electric_guitar_clean</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="slabel">go deeper</div>
+  <div class="link-list">
+    <div><a href="https://strudel.cc/workshop/getting-started/" target="_blank">strudel.cc/workshop</a><span class="ld">— official tutorial</span></div>
+    <div><a href="https://strudel.cc/learn/mini-notation/" target="_blank">strudel.cc/learn/mini-notation</a><span class="ld">— full syntax</span></div>
+    <div><a href="https://strudel.cc/intro/showcase/" target="_blank">strudel.cc/intro/showcase</a><span class="ld">— what people have made</span></div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <span class="nav-spacer nav-btn">← back</span>
+  <a href="level1.html" class="nav-btn">level 1 — edit the beat →</a>
+</div>
+
+</body>
+</html>

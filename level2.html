@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broken Telephone — Level 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: #f7f5f0; color: #1a1a1a; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+  .page { max-width: 720px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+  .topnav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; border-bottom: 1px solid #d0ccc4; max-width: 720px; margin: 0 auto; }
+  .nav-steps { display: flex; gap: 6px; }
+  .nav-step { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #d0ccc4; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #aaa; text-decoration: none; transition: all 0.15s; }
+  .nav-step.active { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+  .nav-step:hover:not(.active) { border-color: #888; color: #555; }
+  .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #888; }
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #f7f5f0; border-top: 1px solid #d0ccc4; padding: 0.85rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; text-decoration: none; color: #1a1a1a; padding: 7px 14px; border: 1.5px solid #1a1a1a; border-radius: 6px; transition: all 0.15s; }
+  .nav-btn:hover { background: #1a1a1a; color: #f7f5f0; }
+  .nav-btn.ghost { color: #888; border-color: #d0ccc4; }
+  .nav-btn.ghost:hover { background: #e8e5de; color: #444; }
+  .nav-spacer { visibility: hidden; }
+  .pg-eyebrow { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 0.3rem; margin-top: 1.5rem; }
+  h1 { font-size: 26px; font-weight: 600; margin-bottom: 0.4rem; }
+  .pg-desc { color: #555; font-size: 14px; margin-bottom: 1.5rem; line-height: 1.65; }
+  .pg-desc code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #e8e5de; padding: 1px 5px; border-radius: 3px; color: #2a2a2a; }
+  .slabel { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.6rem; margin-top: 1.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid #d0ccc4; }
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #e8e5de; padding: 1px 5px; border-radius: 3px; color: #2a2a2a; }
+  pre { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e8e4dc; white-space: pre; overflow-x: auto; line-height: 1.7; }
+  .str { color: #a8e6b8; } .fn { color: #b8d4ff; } .num { color: #ffd4a8; } .cm { color: #666; }
+  hr { border: none; border-top: 1px dashed #d0ccc4; margin: 1.5rem 0; }
+  /* activity — teal */
+  .act { background: #e1f5ee; border: 1px solid #9fe1cb; border-radius: 10px; padding: 1.25rem 1.3rem; }
+  .act-title { font-size: 18px; font-weight: 600; color: #0f6e56; margin-bottom: 0.35rem; }
+  .act-level { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #1d9e75; margin-bottom: 0.75rem; }
+  .act-desc { font-size: 13.5px; color: #1a6655; line-height: 1.65; margin-bottom: 1.1rem; }
+  .act-desc code { background: #c8edda; color: #0f6e56; font-size: 12px; }
+  .skel-row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .open-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; padding: 9px 16px; border-radius: 6px; text-decoration: none; white-space: nowrap; align-self: flex-start; background: #0f6e56; color: #fff; }
+  .open-btn:hover { background: #085041; }
+  .or-sep { font-size: 11px; color: #5dcaa5; align-self: center; padding: 0 2px; }
+  .skel-code { flex: 1; min-width: 220px; background: #1a1a1a; border-radius: 5px; padding: 0.65rem 0.9rem; }
+  .skel-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; }
+  .skel-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #666; font-family: 'IBM Plex Mono', monospace; }
+  .copy-btn { font-size: 10px; font-family: 'IBM Plex Mono', monospace; background: #333; color: #ccc; border: none; border-radius: 3px; padding: 2px 7px; cursor: pointer; }
+  .clabel { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #0f6e56; margin-bottom: 0.45rem; margin-top: 1rem; }
+  .rule-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 0.85rem; }
+  .rule { font-size: 11.5px; background: #fff; border: 1px solid #9fe1cb; border-radius: 4px; padding: 3px 8px; color: #0f6e56; font-family: 'IBM Plex Mono', monospace; }
+  /* add ideas grid — teal cards now */
+  .add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.5rem; }
+  @media (max-width: 600px) { .add-grid { grid-template-columns: 1fr; } }
+  .add-card { background: #c8edda; border: 1px solid #9fe1cb; border-radius: 6px; padding: 0.7rem 0.85rem; }
+  .add-card-name { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #0f6e56; margin-bottom: 0.4rem; }
+  .add-card .code-inner { background: #1a1a1a; border-radius: 4px; padding: 0.5rem 0.7rem; }
+  .add-card pre { font-size: 11.5px; }
+  /* key reference — embedded in activity */
+  .key-ref { background: #c8edda; border: 1px solid #9fe1cb; border-radius: 6px; padding: 0.7rem 0.85rem; }
+  .key-ref .code-inner { background: #1a1a1a; border-radius: 4px; padding: 0.5rem 0.7rem; }
+  /* discuss */
+  .discuss { background: #fff; border-left: 3px solid #0f6e56; border-radius: 0 6px 6px 0; padding: 0.85rem 1rem; margin-top: 1.25rem; }
+  .discuss-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.5rem; }
+  .discuss p { font-size: 13px; color: #444; padding: 0.2rem 0; line-height: 1.5; }
+  .discuss p::before { content: "→ "; color: #bbb; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="nav-logo">crc · music</span>
+  <div class="nav-steps">
+    <a href="index.html" class="nav-step" title="Basics">1</a>
+    <a href="level1.html" class="nav-step" title="Level 1">2</a>
+    <a href="level2.html" class="nav-step active" title="Level 2">3</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <p class="pg-eyebrow">Broken Telephone</p>
+  <h1>Level 2 — Add to the Beat</h1>
+  <p class="pg-desc">The skeleton is a finished groove — kick, bass, and quiet hats already locked in. Your job is to <strong>add new <code>$:</code> lines</strong> on top. The original three lines stay exactly as they are. When your beat gets selected, everyone tries to hear what you added and recreate those additions on top of their own skeleton.</p>
+
+  <div class="act">
+    <div class="act-level">Level 2 · additive only</div>
+    <div class="act-title">The skeleton</div>
+    <div class="act-desc">These three lines are locked. Open the skeleton, listen, then add new <code>$:</code> lines below them.</div>
+
+    <div class="skel-row">
+      <a class="open-btn" href="https://strudel.cc/#JDogc291bmQoImJkIH4gfiB+IGJkIH4gc2QgfiIpCiQ6IG5vdGUoImMyIH4gYzIgfiBlYjIgfiBnMiB+Iikuc291bmQoImdtX3N5bnRoX2Jhc3NfMSIpLmdhaW4oMC44KQokOiBzb3VuZCgiaGgqOCIpLmdhaW4oMC4yKQ==" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        open in strudel.cc
+      </a>
+      <span class="or-sep">or</span>
+      <div class="skel-code">
+        <div class="skel-top">
+          <span class="skel-label">paste into strudel.cc</span>
+          <button class="copy-btn" onclick="copy2(this)">copy</button>
+        </div>
+        <pre><span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"bd ~ ~ ~ bd ~ sd ~"</span>)
+<span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"c2 ~ c2 ~ eb2 ~ g2 ~"</span>).<span class="fn">sound</span>(<span class="str">"gm_synth_bass_1"</span>).<span class="fn">gain</span>(<span class="num">0.8</span>)
+<span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"hh*8"</span>).<span class="fn">gain</span>(<span class="num">0.2</span>)
+<span class="cm">// add your lines below ↓</span></pre>
+      </div>
+    </div>
+
+    <div class="clabel">rules</div>
+    <div class="rule-row">
+      <span class="rule">keep the 3 original lines unchanged</span>
+      <span class="rule">add new $: lines only</span>
+      <span class="rule">use only these notes: c eb f g bb</span>
+      <span class="rule">max *8</span>
+    </div>
+
+    <div class="clabel">what to add — ideas</div>
+    <div class="add-grid">
+
+      <div class="add-card">
+        <div class="add-card-name">lead melody</div>
+        <div class="code-inner"><pre><span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"c4 ~ eb4 ~ g4 ~ f4 ~"</span>)
+  .<span class="fn">sound</span>(<span class="str">"gm_lead_1_square"</span>)
+  .<span class="fn">gain</span>(<span class="num">0.6</span>)</pre></div>
+      </div>
+
+      <div class="add-card">
+        <div class="add-card-name">counter melody</div>
+        <div class="code-inner"><pre><span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"g4 ~ ~ ~ f4 ~ eb4 ~"</span>)
+  .<span class="fn">sound</span>(<span class="str">"gm_violin"</span>)
+  .<span class="fn">gain</span>(<span class="num">0.5</span>)</pre></div>
+      </div>
+
+      <div class="add-card">
+        <div class="add-card-name">extra percussion</div>
+        <div class="code-inner"><pre><span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"~ ~ ~ cp ~ ~ ~ cp"</span>)
+  .<span class="fn">gain</span>(<span class="num">0.6</span>)</pre></div>
+      </div>
+
+      <div class="add-card">
+        <div class="add-card-name">high melody</div>
+        <div class="code-inner"><pre><span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"c5 ~ ~ ~ bb4 ~ ~ ~"</span>)
+  .<span class="fn">sound</span>(<span class="str">"triangle"</span>)
+  .<span class="fn">gain</span>(<span class="num">0.4</span>)</pre></div>
+      </div>
+
+    </div>
+
+    <div class="clabel">notes you can use</div>
+    <div class="key-ref">
+      <div class="code-inner"><pre><span class="cm">// these 5 notes fit over the bassline — pick any of them</span>
+<span class="str">c3  eb3  f3  g3  bb3   </span><span class="cm">// lower</span>
+<span class="str">c4  eb4  f4  g4  bb4   </span><span class="cm">// middle</span>
+<span class="str">c5  eb5  f5  g5  bb5   </span><span class="cm">// higher</span></pre></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="slabel">after reveal — discuss</div>
+  <div class="discuss">
+    <div class="discuss-label">discussion prompts</div>
+    <p>Same skeleton, completely different songs — what made each version distinct?</p>
+    <p>What was hardest to hear: the melody, the rhythm of your addition, or the instrument?</p>
+    <p>Did anyone add something that changed how the locked lines <em>felt</em> without touching them?</p>
+    <p>What's the minimum addition that makes the biggest difference?</p>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <a href="level1.html" class="nav-btn ghost">← level 1</a>
+  <span class="nav-spacer nav-btn">next →</span>
+</div>
+
+<script>
+function copy2(btn) {
+  navigator.clipboard.writeText(`$: sound("bd ~ ~ ~ bd ~ sd ~")\n$: note("c2 ~ c2 ~ eb2 ~ g2 ~").sound("gm_synth_bass_1").gain(0.8)\n$: sound("hh*8").gain(0.2)\n// add your lines below ↓`).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 2000);
+  });
+}
+</script>
+
+</body>
+</html>
