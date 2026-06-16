@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facilitator Guide — Music Session</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: #f7f5f0; color: #1a1a1a; font-size: 14px; line-height: 1.6; }
+  .page { max-width: 760px; margin: 0 auto; padding: 2.5rem 2rem 3rem; }
+
+  /* header */
+  .header { border-bottom: 2px solid #1a1a1a; padding-bottom: 1.25rem; margin-bottom: 2rem; }
+  .eyebrow { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 0.3rem; }
+  h1 { font-size: 28px; font-weight: 600; line-height: 1.2; margin-bottom: 0.4rem; }
+  .header-meta { font-size: 13px; color: #555; }
+  .header-meta a { color: #1a1a1a; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+
+  /* timeline */
+  .timeline { display: flex; gap: 0; margin-bottom: 2rem; border: 1px solid #1a1a1a; border-radius: 6px; overflow: hidden; }
+  .tl-block { flex: 1; padding: 0.65rem 0.85rem; border-right: 1px solid #1a1a1a; font-size: 12px; }
+  .tl-block:last-child { border-right: none; }
+  .tl-time { font-weight: 600; font-size: 13px; display: block; }
+  .tl-label { color: #555; font-size: 11px; }
+  .tl-intro { background: #e8e5de; }
+  .tl-l1 { background: #ede8fb; }
+  .tl-l2 { background: #e1f5ee; }
+  .tl-close { background: #fce8e8; }
+
+  /* sections */
+  h2 { font-size: 20px; font-weight: 600; margin-bottom: 0.2rem; }
+  .section { margin-bottom: 2.25rem; }
+  .section-header { display: flex; align-items: baseline; gap: 12px; padding-bottom: 0.6rem; border-bottom: 1px solid #d0ccc4; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .section-num { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #888; }
+  .time-tag { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
+  .tag-intro { background: #d8d5cc; color: #3a3830; }
+  .tag-l1 { background: #d8d0f8; color: #3d2f9e; }
+  .tag-l2 { background: #c8edda; color: #0f6e56; }
+  .tag-close { background: #fcd5d5; color: #8b1f1f; }
+
+  p.desc { color: #444; margin-bottom: 1rem; font-size: 14px; }
+
+  /* code */
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: #e8e5de; padding: 1px 5px; border-radius: 3px; color: #2a2a2a; }
+  .code-wrap { background: #1a1a1a; border-radius: 5px; padding: 0.7rem 0.9rem; margin: 0.5rem 0; }
+  pre { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #e8e4dc; white-space: pre; overflow-x: auto; line-height: 1.7; }
+  .str { color: #a8e6b8; } .fn { color: #b8d4ff; } .num { color: #ffd4a8; } .cm { color: #666; }
+
+  /* steps */
+  .step-block { background: #fff; border: 1px solid #d0ccc4; border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: 0.85rem; }
+  .step-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.5rem; gap: 12px; flex-wrap: wrap; }
+  .step-title { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+  .step-time { font-size: 11px; color: #888; font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+  .step-content { font-size: 13.5px; color: #333; line-height: 1.65; }
+  .step-content p { margin-bottom: 0.5rem; }
+  .step-content p:last-child { margin-bottom: 0; }
+
+  /* say block — what to literally say */
+  .say { background: #fef9ed; border-left: 3px solid #b8862c; border-radius: 0 6px 6px 0; padding: 0.7rem 0.95rem; margin: 0.6rem 0; font-style: italic; color: #5e4513; font-size: 13px; line-height: 1.6; }
+  .say-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #b8862c; font-weight: 600; font-style: normal; margin-bottom: 0.3rem; display: block; }
+
+  /* watch-out / warning block */
+  .watch { background: #fcedea; border-left: 3px solid #b8483a; border-radius: 0 6px 6px 0; padding: 0.65rem 0.95rem; margin: 0.6rem 0; color: #6e2419; font-size: 12.5px; line-height: 1.55; }
+  .watch-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #b8483a; font-weight: 600; margin-bottom: 0.25rem; display: block; }
+
+  /* tip block */
+  .tip { background: #e7eef9; border-left: 3px solid #3a64b8; border-radius: 0 6px 6px 0; padding: 0.65rem 0.95rem; margin: 0.6rem 0; color: #1f3a6e; font-size: 12.5px; line-height: 1.55; }
+  .tip-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #3a64b8; font-weight: 600; margin-bottom: 0.25rem; display: block; }
+
+  /* round box */
+  .round { background: #ede8fb; border: 1px solid #c8bff5; border-radius: 8px; padding: 0.95rem 1.1rem; margin: 0.75rem 0; }
+  .round.teal { background: #e1f5ee; border-color: #9fe1cb; }
+  .round-title { font-size: 12px; font-weight: 600; color: #3d2f9e; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .round.teal .round-title { color: #0f6e56; }
+  .round-step { display: flex; gap: 10px; padding: 0.3rem 0; font-size: 13px; color: #3d2f9e; line-height: 1.5; }
+  .round.teal .round-step { color: #1a6655; }
+  .round-step-time { font-family: 'IBM Plex Mono', monospace; font-size: 11px; min-width: 50px; color: #888; padding-top: 1px; }
+  .round-step strong { color: #3d2f9e; }
+  .round.teal .round-step strong { color: #0f6e56; }
+
+  /* prep checklist */
+  .prep { background: #fff; border: 1px solid #d0ccc4; border-radius: 8px; padding: 1rem 1.15rem; }
+  .prep-item { display: flex; gap: 10px; padding: 0.35rem 0; font-size: 13.5px; color: #333; align-items: flex-start; }
+  .prep-check { font-family: 'IBM Plex Mono', monospace; color: #888; padding-top: 1px; }
+
+  hr { border: none; border-top: 1px dashed #d0ccc4; margin: 2rem 0; }
+
+  /* answer key */
+  .answer-key { background: #f0ede6; border: 1px solid #d0ccc4; border-radius: 8px; padding: 1rem 1.15rem; margin-top: 0.5rem; }
+  .ak-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 0.6rem; }
+
+  /* student link box */
+  .links-box { background: #1a1a1a; color: #e8e4dc; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; }
+  .links-box-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #888; font-weight: 600; margin-bottom: 0.4rem; }
+  .links-box a { color: #b8d4ff; font-family: 'IBM Plex Mono', monospace; font-size: 13px; display: block; padding: 2px 0; text-decoration: none; }
+  .links-box a:hover { color: #e8e4dc; }
+
+  @media print {
+    body { background: white; font-size: 12px; }
+    .page { padding: 1.5rem; max-width: 100%; }
+    .step-block, .round, .say, .watch, .tip { break-inside: avoid; }
+    .section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <p class="eyebrow">Facilitator Guide</p>
+    <h1>Making Music with Code — Session Plan</h1>
+    <p class="header-meta">1 hour &nbsp;·&nbsp; ~14 people &nbsp;·&nbsp; Projector recommended &nbsp;·&nbsp; Your copy — not for participants</p>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <div class="tl-block tl-intro">
+      <span class="tl-time">15 min</span>
+      <span class="tl-label">Intro / Basics</span>
+    </div>
+    <div class="tl-block tl-l1">
+      <span class="tl-time">25 min</span>
+      <span class="tl-label">Level 1 — Edit</span>
+    </div>
+    <div class="tl-block tl-l2">
+      <span class="tl-time">15 min</span>
+      <span class="tl-label">Level 2 — Add</span>
+    </div>
+    <div class="tl-block tl-close">
+      <span class="tl-time">5 min</span>
+      <span class="tl-label">Close</span>
+    </div>
+  </div>
+
+  <!-- PARTICIPANT LINKS -->
+  <div class="links-box">
+    <div class="links-box-label">share these links with participants</div>
+    <a href="https://hawa-mani.github.io/CR-Club/" target="_blank">https://hawa-mani.github.io/CR-Club/</a>
+    <a href="https://hawa-mani.github.io/CR-Club/level1.html" target="_blank">https://hawa-mani.github.io/CR-Club/level1.html</a>
+    <a href="https://hawa-mani.github.io/CR-Club/level2.html" target="_blank">https://hawa-mani.github.io/CR-Club/level2.html</a>
+  </div>
+
+  <!-- PREP -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">Before the session</span>
+      <h2>Prep checklist</h2>
+    </div>
+    <div class="prep">
+      <div class="prep-item"><span class="prep-check">☐</span>Test the projector — strudel.cc audio works through whatever speakers you have</div>
+      <div class="prep-item"><span class="prep-check">☐</span>Open all three pages on your laptop in separate tabs</div>
+      <div class="prep-item"><span class="prep-check">☐</span>Open strudel.cc in your browser, run a quick beat to confirm audio</div>
+      <div class="prep-item"><span class="prep-check">☐</span>Share the student site link in the chat / on the screen as people arrive</div>
+      <div class="prep-item"><span class="prep-check">☐</span>Prepare a way to randomly pick people — names on slips, random.org, etc.</div>
+      <div class="prep-item"><span class="prep-check">☐</span>Volume check — too loud and it's stressful, too quiet and the rhythm is hard to hear</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- INTRO -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">Part 1</span>
+      <h2>Intro / Basics</h2>
+      <span class="time-tag tag-intro">15 min</span>
+    </div>
+
+    <p class="desc">Goal: everyone has enough vocabulary to participate in the activity. Don't try to teach Strudel fully — just enough that <code>$:</code>, <code>~</code>, <code>*</code>, <code>note()</code>, and <code>.gain()</code> all mean something concrete.</p>
+
+    <div class="say">
+      <span class="say-label">opening</span>
+      "Today we're doing something different — we're going to read code by listening to it. Strudel is a live coding environment for making music in your browser. You write code, hit play, it loops. Change the code while it's running and the music updates on the next loop. Nothing to install."
+    </div>
+
+    <p class="desc"><strong>Walk through each concept card on the basics page (page 1) in order.</strong> Paste each snippet into Strudel on the projector, run it, talk about what's happening. About 1–2 minutes per concept.</p>
+
+    <div class="step-block">
+      <div class="step-header"><span class="step-title">1. The cycle</span><span class="step-time">~2 min</span></div>
+      <div class="step-content">
+        <p>Paste <code>sound("bd hh sd hh")</code>, run it. Then add more sounds and run it again. Point out that it gets faster — everything fits in one loop.</p>
+        <div class="say">Key idea: "Strudel doesn't care how many sounds you write — it always squeezes them into the same time. More sounds = faster. Fewer = slower."</div>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header"><span class="step-title">2. Drums + Silence</span><span class="step-time">~3 min</span></div>
+      <div class="step-content">
+        <p>Show <code>bd sd hh oh cp</code>. Run <code>sound("bd sd bd sd")</code>, then <code>sound("bd ~ sd ~")</code>. Hear the difference.</p>
+        <div class="say">"This tilde is silence. It's not nothing — it's holding a beat. The rests are what make it feel like a beat instead of just noise."</div>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header"><span class="step-title">3. Repeat with *</span><span class="step-time">~2 min</span></div>
+      <div class="step-content">
+        <p>Run <code>sound("hh*4")</code> then <code>sound("hh*8")</code>. Then combine: <code>sound("bd ~ sd ~")</code> and <code>sound("hh*8")</code> on separate lines won't both play yet — leads into <code>$:</code>.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header"><span class="step-title">4. Notes + melody</span><span class="step-time">~3 min</span></div>
+      <div class="step-content">
+        <p>Define melody plainly: "a sequence of pitched notes." Run <code>note("c3 e3 g3 e3").sound("piano")</code>.</p>
+        <div class="watch"><span class="watch-label">watch out</span>The pentatonic / "easy mode" notes are <code>c3 eb3 f3 g3 bb3</code>. Don't say "pentatonic" — say "these 5 notes sound good together." Music theory vocab will lose people instantly.</div>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header"><span class="step-title">5. Volume — .gain()</span><span class="step-time">~1 min</span></div>
+      <div class="step-content">
+        <p>Quick. Show <code>sound("hh*8").gain(0.3)</code> vs no gain. Hats sit behind the kick.</p>
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-header"><span class="step-title">6. The $: layering</span><span class="step-time">~3 min</span></div>
+      <div class="step-content">
+        <p>This is the most important concept. Paste the full 3-line example from the basics page and run it. Everything they'll do for the rest of the hour uses <code>$:</code>.</p>
+        <div class="say">"The dollar-colon at the start of a line is what runs multiple patterns at the same time. Each line is its own independent loop. This is how you layer drums, bass, and melody."</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-label">if running long</span>
+      Cut the gain/volume concept — it's intuitive enough that people will figure it out during the activity. Keep silence, repeat, notes, and $:.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- LEVEL 1 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">Part 2</span>
+      <h2>Level 1 — Edit the Beat</h2>
+      <span class="time-tag tag-l1">25 min</span>
+    </div>
+
+    <p class="desc">Everyone starts from the same 3-line skeleton, edits it to make it their own, then one person at a time gets their beat played and the room transcribes by editing their own skeleton to match.</p>
+
+    <div class="answer-key">
+      <div class="ak-title">the skeleton</div>
+      <div class="code-wrap">
+        <pre><span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"bd ~ sd ~"</span>)
+<span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"hh*4"</span>).<span class="fn">gain</span>(<span class="num">0.4</span>)
+<span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"c3 ~ ~ ~"</span>).<span class="fn">sound</span>(<span class="str">"piano"</span>)</pre>
+      </div>
+    </div>
+
+    <div class="say">
+      <span class="say-label">transition</span>
+      "Now you're going to make your own beat — but everyone starts from the exact same starting point. Open level 1 in the link I shared. There's a button that opens the skeleton in Strudel.cc already loaded, or you can copy it. Your job is to <em>edit</em> what's there — not add new lines."
+    </div>
+
+    <div class="round">
+      <div class="round-title">one round — runs ×3 in 25 min</div>
+      <div class="round-step"><span class="round-step-time">~3 min</span><span><strong>Make.</strong> Everyone edits the skeleton independently. Walk around, help with syntax errors.</span></div>
+      <div class="round-step"><span class="round-step-time">~30 sec</span><span><strong>Pick.</strong> Random selection. Composer plays their beat twice through the speakers. Others can't see the screen.</span></div>
+      <div class="round-step"><span class="round-step-time">~3 min</span><span><strong>Recreate.</strong> Everyone else edits <em>their</em> skeleton to match what they heard.</span></div>
+      <div class="round-step"><span class="round-step-time">~2 min</span><span><strong>Reveal + discuss.</strong> Composer puts their code on the projector. 2–3 others share theirs. Compare.</span></div>
+    </div>
+
+    <p class="desc"><strong>Discussion prompts after each reveal:</strong></p>
+    <div class="step-block">
+      <div class="step-content">
+        <p>→ What did the room get right — rhythm, pitch, or density?</p>
+        <p>→ Did anyone use different code to get the same sound?</p>
+        <p>→ What was hardest to hear accurately?</p>
+        <p>→ What would you change to make your beat easier to transcribe?</p>
+      </div>
+    </div>
+
+    <div class="watch">
+      <span class="watch-label">most common issue</span>
+      Someone writes something too complex and the room can't transcribe it. <strong>That's fine and actually good for discussion</strong> — ask "what made this hard?" and "what constraint would have helped?" Don't treat it as a failure.
+    </div>
+
+    <div class="tip">
+      <span class="tip-label">if a round goes too fast</span>
+      Stretch the discussion. The reveal is the point — running 3 rounds with rushed discussion is worse than running 2 with real conversation.
+    </div>
+
+    <div class="tip">
+      <span class="tip-label">if a round goes too slow</span>
+      Skip the third round, jump to Level 2 early. Level 2 is the more interesting activity anyway.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- LEVEL 2 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">Part 3</span>
+      <h2>Level 2 — Add to the Beat</h2>
+      <span class="time-tag tag-l2">15 min</span>
+    </div>
+
+    <p class="desc">Same broken telephone format but the skeleton is a complete groove and people <em>add</em> new <code>$:</code> lines on top instead of editing what's there. The original 3 lines stay untouched.</p>
+
+    <div class="answer-key">
+      <div class="ak-title">the skeleton</div>
+      <div class="code-wrap">
+        <pre><span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"bd ~ ~ ~ bd ~ sd ~"</span>)
+<span class="fn">$:</span> <span class="fn">note</span>(<span class="str">"c2 ~ c2 ~ eb2 ~ g2 ~"</span>).<span class="fn">sound</span>(<span class="str">"gm_synth_bass_1"</span>).<span class="fn">gain</span>(<span class="num">0.8</span>)
+<span class="fn">$:</span> <span class="fn">sound</span>(<span class="str">"hh*8"</span>).<span class="fn">gain</span>(<span class="num">0.2</span>)</pre>
+      </div>
+    </div>
+
+    <div class="say">
+      <span class="say-label">transition</span>
+      "Level 2 is different. This skeleton is already a complete groove — kick, bass, hi-hats — you can't change any of it. Your job is to <em>add</em> new lines on top. Same broken telephone format: you'll write your addition, someone gets picked, then everyone tries to hear what they added and add the same thing on their own skeleton."
+    </div>
+
+    <div class="round teal">
+      <div class="round-title">one round — usually fits 1–2 rounds in 15 min</div>
+      <div class="round-step"><span class="round-step-time">~4 min</span><span><strong>Add.</strong> Everyone adds 1–2 new <code>$:</code> lines below the skeleton. Page has example ideas if people freeze up.</span></div>
+      <div class="round-step"><span class="round-step-time">~30 sec</span><span><strong>Pick.</strong> Random selection. Person plays their full beat (locked lines + their additions).</span></div>
+      <div class="round-step"><span class="round-step-time">~3 min</span><span><strong>Recreate.</strong> Others try to add lines on their skeleton to match the additions they heard.</span></div>
+      <div class="round-step"><span class="round-step-time">~2 min</span><span><strong>Reveal + discuss.</strong> Show the composer's full code. Compare.</span></div>
+    </div>
+
+    <p class="desc"><strong>Discussion prompts:</strong></p>
+    <div class="step-block">
+      <div class="step-content">
+        <p>→ Same skeleton, completely different songs — what made each version distinct?</p>
+        <p>→ What was hardest to hear: the melody, the rhythm, or the instrument?</p>
+        <p>→ Did anyone add something that changed how the locked lines <em>felt</em> without touching them?</p>
+        <p>→ What's the minimum addition that makes the biggest difference?</p>
+      </div>
+    </div>
+
+    <div class="watch">
+      <span class="watch-label">watch out</span>
+      The skeleton has very quiet hats (<code>gain(0.2)</code>) on purpose so they don't compete with what people add. If someone says "I can't hear the hats," that's correct — they're supposed to sit underneath.
+    </div>
+
+    <div class="tip">
+      <span class="tip-label">if people freeze up</span>
+      Point them at the "what to add — ideas" cards on the page. Each one is a complete <code>$:</code> line they can paste and modify.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- CLOSE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">Part 4</span>
+      <h2>Close</h2>
+      <span class="time-tag tag-close">5 min</span>
+    </div>
+
+    <p class="desc">Wrap-up. Make sure everyone saves their beat before closing the tab.</p>
+
+    <div class="say">
+      <span class="say-label">closing</span>
+      "Before you close Strudel — copy your final beat somewhere. Paste it back in any time. The take-home links on the basics page point to the official Strudel workshop if you want to go deeper. Thanks for playing along."
+    </div>
+
+    <p class="desc">Optional final question if there's time: <em>"What's something you noticed today that you'd take into how you read regular code?"</em> Good code reading club closer — bridges the music back to the broader skill.</p>
+  </div>
+
+  <hr>
+
+  <!-- AFTER -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">Reflection</span>
+      <h2>After the session</h2>
+    </div>
+    <div class="prep">
+      <div class="prep-item"><span class="prep-check">→</span>What concepts needed more time than expected?</div>
+      <div class="prep-item"><span class="prep-check">→</span>Was the Level 1 skeleton too simple? Too complex?</div>
+      <div class="prep-item"><span class="prep-check">→</span>Did Level 2 actually work, or did people struggle to add anything?</div>
+      <div class="prep-item"><span class="prep-check">→</span>What discussion question got the most engagement?</div>
+      <div class="prep-item"><span class="prep-check">→</span>What would you cut or expand next time?</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
